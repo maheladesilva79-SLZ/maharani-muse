@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Bodoni+Moda:wght@600;700;800;900&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#181818; --paper:#fff; --mist:#f2f2f2; --line:#e6e6e6; --gold:#a98432; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ font-family:'Poppins',sans-serif; color:var(--ink); background:var(--paper); -webkit-font-smoothing:antialiased; overflow-x:hidden; letter-spacing:.01em; }
+  img{ display:block; }
+  @keyframes kfFade{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes kfUp{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:translateY(0); } }
+  .kf-nav-link{ position:relative; }
+  .kf-nav-link::after{ content:''; position:absolute; left:0; right:0; bottom:-6px; height:1px; background:var(--ink); transform:scaleX(0); transition:transform .3s ease; }
+  .kf-nav-link:hover::after{ transform:scaleX(1); }
+  .kf-icon{ transition:opacity .2s; }
+  .kf-icon:hover{ opacity:.55; }
+  .kf-arrow{ transition:background .25s, color .25s, border-color .25s; }
+  .kf-arrow:hover{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .kf-pill{ transition:background .3s, color .3s; }
+  .kf-pill:hover{ background:#000; }
+  .kf-card .kf-img img{ transition:transform 1.1s cubic-bezier(.2,.7,.2,1); }
+  .kf-card:hover .kf-img img{ transform:scale(1.05); }
+  .kf-card:hover .kf-eye{ opacity:1; transform:translateY(0); }
+  .kf-sizebar{ overflow:hidden; max-height:0; opacity:0; transition:max-height .45s cubic-bezier(.4,0,.2,1), opacity .3s ease; }
+  .kf-card:hover .kf-sizebar{ max-height:130px; opacity:1; }
+  .kf-sizebar-inner{ padding-top:13px; transform:translateY(14px); transition:transform .45s cubic-bezier(.4,0,.2,1); }
+  .kf-card:hover .kf-sizebar-inner{ transform:translateY(0); }
+  .kf-card:hover .kf-name{ text-decoration:underline; text-underline-offset:3px; }
+  .kf-size{ transition:background .2s, color .2s, border-color .2s; }
+  .kf-size:hover{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .kf-swatch{ transition:transform .2s, box-shadow .2s; }
+  .kf-swatch:hover{ transform:scale(1.2); }
+  /* COLLECTION ACCORDION */
+  .kf-acc{ display:flex; gap:0; height:560px; }
+  .kf-acc-panel{ position:relative; flex:1 1 0; min-width:0; overflow:hidden; cursor:pointer; transition:flex-grow .85s cubic-bezier(.33,0,.2,1); }
+  .kf-acc-panel img{ width:100%; height:100%; object-fit:cover; transition:transform 2.2s cubic-bezier(.2,.7,.2,1); }
+  .kf-acc:hover .kf-acc-panel{ flex-grow:.55; }
+  .kf-acc .kf-acc-panel:hover{ flex-grow:3.4; }
+  .kf-acc-panel:hover img{ transform:scale(1.04); }
+  .kf-acc-panel:hover .kf-acc-cap{ opacity:1; transform:translateY(0); }
+  .kf-acc-panel:hover .kf-acc-shop{ opacity:1; transform:translateY(0); }
+  .kf-insta img{ transition:transform .8s cubic-bezier(.2,.7,.2,1), filter .4s; }
+  .kf-insta:hover img{ transform:scale(1.07); filter:brightness(.6); }
+  .kf-insta:hover .kf-insta-ov{ opacity:1; }
+  .kf-cta{ transition:transform .3s, box-shadow .3s, background .3s; }
+  .kf-cta:hover{ background:#000; transform:translateY(-2px); }
+  .kf-link{ position:relative; }
+  .kf-link::after{ content:''; position:absolute; left:0; bottom:-3px; height:1px; width:0; background:currentColor; transition:width .3s ease; }
+  .kf-link:hover::after{ width:100%; }
+  ::selection{ background:var(--ink); color:#fff; }
+  @media(max-width:1024px){ .kf-acc{ height:420px; } }
+</style>
+</helmet>
+
+<div style="background:var(--paper);">
+
+  <!-- ANNOUNCEMENT -->
+  <div style="background:#181818; color:#fff; text-align:center; padding:9px 20px; font-size:10.5px; font-weight:400; letter-spacing:1.8px; text-transform:uppercase;">
+    Complimentary worldwide shipping over LKR 25,000 &nbsp;·&nbsp; Handcrafted in Sri Lanka
+  </div>
+
+  <!-- HEADER -->
+  <header style="position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:30px; padding:0 38px; height:84px;">
+    <!-- left: hamburger + logo -->
+    <div style="display:flex; align-items:center; gap:18px;">
+      <button type="button" onClick="{{ toggleMenu }}" aria-label="Open menu" style="display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px 2px;">
+        <span style="display:block; width:22px; height:1.5px; background:#181818;"></span>
+        <span style="display:block; width:22px; height:1.5px; background:#181818;"></span>
+        <span style="display:block; width:22px; height:1.5px; background:#181818;"></span>
+      </button>
+      <a href="#" style="display:flex; flex-direction:column; align-items:flex-start; line-height:1; text-decoration:none; gap:1px;">
+        <span style="display:inline-flex; align-items:flex-end; font-family:'Bodoni Moda', serif; font-size:27px; font-weight:800; letter-spacing:-0.5px; text-transform:uppercase; color:#181818; line-height:1;"><span>MAH</span><img src="assets/queen.png" alt="A" style="height:1.55em; width:auto; margin:0 -1px; transform:translateY(-3px);"><span>RANI&nbsp;MUSE</span></span>
+        <span style="font-family:'Dancing Script', cursive; font-size:13px; color:var(--gold); letter-spacing:.5px; margin-top:-1px;">Dress like the Queen you are</span>
+      </a>
+    </div>
+    <!-- center: nav -->
+    <nav style="display:flex; gap:30px; align-items:center; justify-content:center;">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="7">
+        <a href="#" class="kf-nav-link" style="font-family:'Poppins',sans-serif; font-size:12px; font-weight:400; letter-spacing:1.2px; text-transform:uppercase; color:#181818; text-decoration:none; white-space:nowrap;">{{ item }}</a>
+      </sc-for>
+    </nav>
+    <!-- right: icons -->
+    <div style="display:flex; gap:18px; align-items:center; justify-content:flex-end;">
+      <select value="{{ currency }}" onChange="{{ setCurrency }}" style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:400; letter-spacing:.6px; border:1px solid var(--line); padding:6px 9px; background:transparent; color:#181818; cursor:pointer;">
+        <option value="LKR">LKR ₨</option>
+        <option value="USD">USD $</option>
+        <option value="AED">AED د.إ</option>
+      </select>
+      <a href="#" class="kf-icon" style="color:#181818; display:flex;" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="20" height="20"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+      </a>
+      <a href="#" class="kf-icon" style="color:#181818; display:flex;" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </a>
+      <a href="#" class="kf-icon" style="color:#181818; display:flex; position:relative;" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="20" height="20"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="position:absolute; top:-7px; right:-9px; background:#181818; color:#fff; border-radius:50%; width:16px; height:16px; font-size:9px; display:flex; align-items:center; justify-content:center; font-weight:500;">2</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MENU DRAWER -->
+  <div onClick="{{ closeMenu }}" style="position:fixed; inset:0; z-index:60; background:rgba(10,10,10,.42); opacity:{{ menuOpacity }}; pointer-events:{{ menuPointer }}; transition:opacity .3s ease;">
+    <aside onClick="{{ stop }}" style="position:absolute; top:0; left:0; bottom:0; width:360px; max-width:86vw; background:#fff; box-shadow:2px 0 40px rgba(0,0,0,.16); transform:translateX({{ menuShift }}); transition:transform .36s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; padding:30px 34px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <span style="font-family:'Bodoni Moda', serif; font-size:17px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:#181818;">Menu</span>
+        <button type="button" onClick="{{ closeMenu }}" aria-label="Close menu" style="background:none; border:none; cursor:pointer; font-size:26px; line-height:1; color:#181818;">&times;</button>
+      </div>
+      <nav style="display:flex; flex-direction:column;">
+        <sc-for list="{{ nav }}" as="m" hint-placeholder-count="7">
+          <a href="#" onClick="{{ closeMenu }}" style="font-family:'Poppins',sans-serif; font-size:15px; font-weight:400; letter-spacing:.5px; color:#181818; text-decoration:none; padding:15px 0; border-bottom:1px solid var(--line);">{{ m }}</a>
+        </sc-for>
+        <a href="#" onClick="{{ closeMenu }}" style="font-family:'Poppins',sans-serif; font-size:15px; font-weight:400; letter-spacing:.5px; color:#181818; text-decoration:none; padding:15px 0; border-bottom:1px solid var(--line);">Size Guide</a>
+      </nav>
+      <div style="margin-top:auto; padding-top:26px; display:flex; flex-direction:column; gap:4px;">
+        <a href="#" onClick="{{ closeMenu }}" style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:400; letter-spacing:1.4px; text-transform:uppercase; color:#888; text-decoration:none; padding:7px 0;">Log in / Register</a>
+        <a href="#" onClick="{{ closeMenu }}" style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:400; letter-spacing:1.4px; text-transform:uppercase; color:#888; text-decoration:none; padding:7px 0;">About Us</a>
+        <a href="#" onClick="{{ closeMenu }}" style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:400; letter-spacing:1.4px; text-transform:uppercase; color:#888; text-decoration:none; padding:7px 0;">Contact Us</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- HERO SLIDER -->
+  <section style="position:relative; height:78vh; min-height:560px; background:#e9e6e2; overflow:hidden;">
+    <div style="position:absolute; inset:0;">
+      <sc-for list="{{ heroSlides }}" as="s" hint-placeholder-count="0">
+        <div style="position:absolute; inset:0; opacity:{{ s.opacity }}; transition:opacity 1.2s ease; will-change:opacity;">
+          <img src="{{ s.img }}" alt="" style="width:100%; height:100%; object-fit:cover; object-position:center 22%; transform:{{ s.scale }}; transition:transform 3.4s ease-out; will-change:transform;">
+          <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(18,16,14,.72) 0%, rgba(18,16,14,.45) 38%, rgba(18,16,14,.12) 66%, transparent 100%);"></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; padding:0 70px; max-width:680px;">
+      <p style="font-size:11px; letter-spacing:3.5px; text-transform:uppercase; color:#fff; opacity:.85; margin-bottom:18px; animation:kfUp .9s ease .1s both;">New Collection — 2025</p>
+      <h1 style="font-family:'Bodoni Moda', serif; font-size:clamp(46px,6.5vw,86px); font-weight:700; letter-spacing:-1px; color:#fff; line-height:1.02; margin-bottom:24px; animation:kfUp 1s ease .2s both;">Wear Your<br>Royal Story</h1>
+      <p style="font-size:14px; color:rgba(255,255,255,.85); line-height:1.8; margin-bottom:34px; font-weight:300; max-width:420px; animation:kfUp 1.05s ease .3s both;">Handcrafted kurtas rooted in Sri Lankan heritage, designed for the global queen.</p>
+      <div style="display:flex; gap:13px; flex-wrap:wrap; animation:kfUp 1.1s ease .4s both;">
+        <a href="#" class="kf-cta" style="background:#181818; color:#fff; padding:15px 40px; font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; text-decoration:none; border-radius:28px;">Shop New Arrivals</a>
+        <a href="#" class="kf-cta" style="background:rgba(255,255,255,.16); color:#fff; padding:15px 40px; font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; border:1px solid rgba(255,255,255,.5); text-decoration:none; border-radius:28px; backdrop-filter:blur(4px);">Explore Collections</a>
+      </div>
+    </div>
+    <!-- dots -->
+    <div style="position:absolute; bottom:28px; right:40px; z-index:3; display:flex; gap:9px;">
+      <sc-for list="{{ heroDots }}" as="d" hint-placeholder-count="4">
+        <button type="button" onClick="{{ d.onClick }}" aria-label="Go to slide" style="width:{{ d.w }}; height:7px; border-radius:7px; border:none; cursor:pointer; padding:0; background:{{ d.bg }}; transition:width .3s, background .3s;"></button>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- NEW ARRIVALS -->
+  <section style="padding:72px 38px 56px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:34px;">
+      <h2 style="font-size:14px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase;">New Arrivals</h2>
+      <div style="display:flex; gap:9px;">
+        <button type="button" class="kf-arrow" aria-label="Previous" style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:#fff; color:#181818; display:flex; align-items:center; justify-content:center; cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"></path></svg></button>
+        <button type="button" class="kf-arrow" aria-label="Next" style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:#fff; color:#181818; display:flex; align-items:center; justify-content:center; cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"></path></svg></button>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+      <sc-for list="{{ arrivals }}" as="p" hint-placeholder-count="4">
+        <div class="kf-card" style="cursor:pointer;">
+          <div class="kf-img" style="position:relative; aspect-ratio:3/4; background:var(--mist); overflow:hidden;">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%; height:100%; object-fit:contain; object-position:center bottom;">
+            <sc-if value="{{ p.badge }}" hint-placeholder-val="">
+              <span style="position:absolute; top:14px; left:14px; background:{{ p.badgeBg }}; color:#fff; font-size:9px; font-weight:500; letter-spacing:1.4px; text-transform:uppercase; padding:5px 11px; border-radius:3px;">{{ p.badge }}</span>
+            </sc-if>
+            <span class="kf-eye" style="position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(-6px); transition:opacity .3s, transform .3s; box-shadow:0 2px 10px rgba(0,0,0,.12);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#181818" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+            <!-- SLIDE-UP SIZE + COLOR PANEL -->
+          </div>
+          <div class="kf-sizebar">
+            <div class="kf-sizebar-inner">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:9px;">
+                <span style="font-size:9.5px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; color:#181818;">Size</span>
+                <div style="flex:1; height:1px; background:var(--line);"></div>
+                <div style="display:flex; gap:5px;">
+                  <sc-for list="{{ p.swatches }}" as="s" hint-placeholder-count="3">
+                    <span class="kf-swatch" style="width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.2); cursor:pointer; background:{{ s.c }};"></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                <sc-for list="{{ p.sizes }}" as="sz" hint-placeholder-count="5">
+                  <span class="kf-size" style="font-size:10.5px; font-weight:400; letter-spacing:.4px; color:#181818; border:1px solid var(--line); border-radius:4px; padding:5px 9px; cursor:pointer; white-space:nowrap;">{{ sz }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <p class="kf-name" style="font-family:'Poppins',sans-serif; font-size:14px; font-weight:400; margin:15px 0 5px; line-height:1.35;">{{ p.name }}</p>
+          <p style="font-size:13px; color:#181818; letter-spacing:.3px;"><span style="font-weight:500;">{{ p.priceStr }}</span><sc-if value="{{ p.wasStr }}" hint-placeholder-val=""><span style="text-decoration:line-through; color:#b0b0b0; font-size:12px; margin-left:8px;">{{ p.wasStr }}</span></sc-if></p>
+        </div>
+      </sc-for>
+    </div>
+    <div style="text-align:center; margin-top:46px;">
+      <a href="#" class="kf-cta" style="display:inline-flex; align-items:center; gap:8px; background:#181818; color:#fff; padding:14px 42px; font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; text-decoration:none; border-radius:28px;">View All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+
+  <!-- COLLECTION ACCORDION (expand one / minimize others) -->
+  <section style="padding:30px 38px 76px;">
+    <div style="margin-bottom:30px;">
+      <p style="font-size:10.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:9px; font-weight:500;">Signature Collections</p>
+      <h2 style="font-family:'Bodoni Moda', serif; font-size:clamp(30px,3.6vw,46px); font-weight:700; letter-spacing:-.5px; line-height:1.05;">The Collection</h2>
+    </div>
+    <div class="kf-acc">
+      <sc-for list="{{ collections }}" as="c" hint-placeholder-count="5">
+        <div class="kf-acc-panel">
+          <img src="{{ c.img }}" alt="{{ c.title }}">
+          <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(15,13,11,.7) 0%, rgba(15,13,11,.05) 45%, transparent 70%);"></div>
+          <div style="position:absolute; left:0; right:0; bottom:0; padding:26px 20px 30px; text-align:center;">
+            <h3 style="font-family:'Bodoni Moda', serif; font-size:23px; font-weight:700; color:#fff; letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap;">{{ c.title }}</h3>
+            <p class="kf-acc-cap" style="font-size:12px; color:rgba(255,255,255,.82); letter-spacing:.5px; margin-top:5px; opacity:0; transform:translateY(8px); transition:opacity .4s ease .1s, transform .4s ease .1s; white-space:nowrap;">{{ c.sub }}</p>
+            <a href="#" class="kf-acc-shop" style="display:inline-flex; align-items:center; gap:7px; margin-top:16px; background:#fff; color:#181818; padding:11px 26px; font-size:10.5px; font-weight:500; letter-spacing:1.6px; text-transform:uppercase; text-decoration:none; border-radius:28px; opacity:0; transform:translateY(8px); transition:opacity .4s ease .15s, transform .4s ease .15s; white-space:nowrap;">Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MOST WANTED BANNER -->
+  <section style="position:relative; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#1c1a18;">
+    <img src="assets/obsidian-ember.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 30%; opacity:.62;">
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,18,16,.82) 0%, rgba(20,18,16,.35) 55%, transparent 100%);"></div>
+    <div style="position:relative; z-index:2; padding:0 70px; max-width:560px;">
+      <p style="font-size:10.5px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; font-weight:500;">Editor's Edit</p>
+      <h2 style="font-family:'Bodoni Moda', serif; font-size:clamp(38px,5vw,64px); font-weight:700; color:#fff; line-height:1.04; letter-spacing:-.5px; margin-bottom:22px;">The Most Wanted</h2>
+      <p style="font-size:14px; color:rgba(255,255,255,.8); line-height:1.8; font-weight:300; max-width:380px; margin-bottom:32px;">The season's most coveted silhouettes — hand-finished, limited and unmistakably regal.</p>
+      <a href="#" class="kf-cta" style="display:inline-flex; align-items:center; gap:8px; background:#fff; color:#181818; padding:15px 42px; font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; text-decoration:none; border-radius:28px;">Shop Now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+
+  <!-- TRENDING NOW -->
+  <section style="padding:72px 38px 56px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:34px;">
+      <h2 style="font-size:14px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase;">Trending Now</h2>
+      <div style="display:flex; gap:9px;">
+        <button type="button" class="kf-arrow" aria-label="Previous" style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:#fff; color:#181818; display:flex; align-items:center; justify-content:center; cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"></path></svg></button>
+        <button type="button" class="kf-arrow" aria-label="Next" style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:#fff; color:#181818; display:flex; align-items:center; justify-content:center; cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"></path></svg></button>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+      <sc-for list="{{ trending }}" as="p" hint-placeholder-count="4">
+        <div class="kf-card" style="cursor:pointer;">
+          <div class="kf-img" style="position:relative; aspect-ratio:3/4; background:var(--mist); overflow:hidden;">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%; height:100%; object-fit:contain; object-position:center bottom;">
+            <sc-if value="{{ p.badge }}" hint-placeholder-val="">
+              <span style="position:absolute; top:14px; left:14px; background:{{ p.badgeBg }}; color:#fff; font-size:9px; font-weight:500; letter-spacing:1.4px; text-transform:uppercase; padding:5px 11px; border-radius:3px;">{{ p.badge }}</span>
+            </sc-if>
+            <span class="kf-eye" style="position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(-6px); transition:opacity .3s, transform .3s; box-shadow:0 2px 10px rgba(0,0,0,.12);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#181818" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+          </div>
+          <div class="kf-sizebar">
+            <div class="kf-sizebar-inner">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:9px;">
+                <span style="font-size:9.5px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; color:#181818;">Size</span>
+                <div style="flex:1; height:1px; background:var(--line);"></div>
+                <div style="display:flex; gap:5px;">
+                  <sc-for list="{{ p.swatches }}" as="s" hint-placeholder-count="3">
+                    <span class="kf-swatch" style="width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.2); cursor:pointer; background:{{ s.c }};"></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                <sc-for list="{{ p.sizes }}" as="sz" hint-placeholder-count="5">
+                  <span class="kf-size" style="font-size:10.5px; font-weight:400; letter-spacing:.4px; color:#181818; border:1px solid var(--line); border-radius:4px; padding:5px 9px; cursor:pointer; white-space:nowrap;">{{ sz }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <p class="kf-name" style="font-family:'Poppins',sans-serif; font-size:14px; font-weight:400; margin:15px 0 5px; line-height:1.35;">{{ p.name }}</p>
+          <p style="font-size:13px; color:#181818; letter-spacing:.3px;"><span style="font-weight:500;">{{ p.priceStr }}</span><sc-if value="{{ p.wasStr }}" hint-placeholder-val=""><span style="text-decoration:line-through; color:#b0b0b0; font-size:12px; margin-left:8px;">{{ p.wasStr }}</span></sc-if></p>
+        </div>
+      </sc-for>
+    </div>
+    <div style="text-align:center; margin-top:46px;">
+      <a href="#" class="kf-cta" style="display:inline-flex; align-items:center; gap:8px; background:#181818; color:#fff; padding:14px 42px; font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; text-decoration:none; border-radius:28px;">View All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+
+  <!-- HERITAGE EDITORIAL BANNER -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; min-height:540px;">
+    <div style="background-image:url('assets/peacock-plume.jpg'); background-size:cover; background-position:center top;"></div>
+    <div style="background:#181818; padding:78px 70px; display:flex; flex-direction:column; justify-content:center;">
+      <p style="font-size:10.5px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; font-weight:500;">Our Heritage</p>
+      <h2 style="font-family:'Bodoni Moda', serif; font-size:clamp(32px,3.6vw,52px); font-weight:700; color:#fff; line-height:1.06; margin-bottom:22px; letter-spacing:-.5px;">Sri Lankan Craft,<br>Global Stage</h2>
+      <p style="color:rgba(255,255,255,.7); font-size:14px; line-height:1.9; margin-bottom:34px; font-weight:300; max-width:400px;">Every Maharani Muse piece celebrates Sri Lankan artistry — meticulous craft, hand-selected fabrics and silhouettes made to move with you across continents and cultures.</p>
+      <a href="#" class="kf-link" style="font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:#fff; text-decoration:none; font-weight:500; width:fit-content;">Discover Our Story →</a>
+    </div>
+  </div>
+
+  <!-- ACCESSORIES -->
+  <section style="padding:72px 38px 56px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:34px;">
+      <h2 style="font-size:14px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase;">Accessories</h2>
+      <a href="#" class="kf-link" style="font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:#181818; text-decoration:none; font-weight:500;">Shop All →</a>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+      <sc-for list="{{ accessories }}" as="p" hint-placeholder-count="4">
+        <div class="kf-card" style="cursor:pointer;">
+          <div class="kf-img" style="position:relative; aspect-ratio:1/1; background:var(--mist); overflow:hidden;">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%; height:100%; object-fit:contain; object-position:center bottom;">
+            <span class="kf-eye" style="position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(-6px); transition:opacity .3s, transform .3s; box-shadow:0 2px 10px rgba(0,0,0,.12);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#181818" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+          </div>
+          <p class="kf-name" style="font-family:'Poppins',sans-serif; font-size:14px; font-weight:400; margin:15px 0 5px; line-height:1.35;">{{ p.name }}</p>
+          <p style="font-size:13px; color:#181818; letter-spacing:.3px;"><span style="font-weight:500;">{{ p.priceStr }}</span></p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section style="padding:56px 0 0; text-align:center;">
+    <p style="font-size:10.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:500;">Follow the Court</p>
+    <h2 style="font-family:'Bodoni Moda', serif; font-size:clamp(28px,3.4vw,44px); font-weight:700; letter-spacing:-.5px;">On Instagram</h2>
+    <p style="font-size:13px; color:#181818; letter-spacing:1px; margin:12px 0 34px;">@maharanimuse</p>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:0;">
+      <sc-for list="{{ insta }}" as="img" hint-placeholder-count="6">
+        <div class="kf-insta" style="aspect-ratio:1; background:var(--mist); overflow:hidden; position:relative; cursor:pointer;">
+          <img src="{{ img }}" alt="" style="width:100%; height:100%; object-fit:cover;">
+          <div class="kf-insta-ov" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .3s; color:#fff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle></svg></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section style="background:var(--mist); padding:76px 38px; text-align:center;">
+    <p style="font-size:10.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; font-weight:500;">Join the Court</p>
+    <h2 style="font-family:'Bodoni Moda', serif; font-size:clamp(30px,3.6vw,48px); font-weight:700; margin-bottom:12px; letter-spacing:-.5px; line-height:1.06;">Be the First to Know</h2>
+    <p style="color:#666; font-size:14px; margin-bottom:34px; font-weight:300;">New collections &amp; exclusive offers — delivered to your inbox.</p>
+    <div style="display:flex; max-width:460px; margin:0 auto;">
+      <input type="email" placeholder="Your email address" style="flex:1; padding:15px 20px; background:#fff; border:1px solid var(--line); border-right:none; color:#181818; font-family:'Poppins',sans-serif; font-size:13px; outline:none; border-radius:28px 0 0 28px;">
+      <button type="button" class="kf-pill" style="padding:15px 32px; background:#181818; border:none; color:#fff; font-family:'Poppins',sans-serif; font-size:11px; font-weight:500; letter-spacing:1.6px; text-transform:uppercase; cursor:pointer; white-space:nowrap; border-radius:0 28px 28px 0;">Subscribe</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#181818; padding:62px 38px 30px;">
+    <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:46px; padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,.1);">
+      <div>
+        <span style="display:inline-flex; align-items:flex-end; font-family:'Bodoni Moda', serif; font-size:25px; font-weight:800; letter-spacing:-0.5px; text-transform:uppercase; color:#fff; line-height:1;"><span>MAH</span><img src="assets/queen.png" alt="A" style="height:1.55em; width:auto; margin:0 -1px; transform:translateY(-3px);"><span>RANI&nbsp;MUSE</span></span>
+        <div style="font-family:'Dancing Script', cursive; font-size:14px; color:var(--gold); margin:3px 0 18px;">Dress like the Queen you are</div>
+        <p style="color:rgba(255,255,255,.5); font-size:13px; line-height:1.8; font-weight:300; max-width:300px;">Sustainable, modern Sri Lankan fashion, crafted for the global queen and shipped worldwide.</p>
+        <div style="display:flex; gap:11px; margin-top:22px;">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="4">
+            <a href="#" class="kf-icon" style="width:36px; height:36px; border:1px solid rgba(255,255,255,.18); border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.7); text-decoration:none; font-size:12px;">{{ s }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
+        <div>
+          <h4 style="font-family:'Poppins',sans-serif; font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:#fff; margin-bottom:18px; font-weight:500;">{{ col.title }}</h4>
+          <div style="display:flex; flex-direction:column; gap:11px;">
+            <sc-for list="{{ col.links }}" as="lnk" hint-placeholder-count="5">
+              <a href="#" class="kf-link" style="color:rgba(255,255,255,.55); font-size:13px; text-decoration:none; width:fit-content; font-weight:300;">{{ lnk }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-top:26px; flex-wrap:wrap; gap:16px;">
+      <p style="color:rgba(255,255,255,.4); font-size:11.5px; letter-spacing:.4px;">© 2025 Maharani Muse. All rights reserved.</p>
+      <div style="display:flex; gap:9px;">
+        <sc-for list="{{ pays }}" as="pay" hint-placeholder-count="4">
+          <span style="border:1px solid rgba(255,255,255,.16); color:rgba(255,255,255,.55); font-size:10px; letter-spacing:.8px; padding:5px 11px; text-transform:uppercase;">{{ pay }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { currency: 'LKR', menuOpen: false, hero: 0 };
+  RATES = { LKR: 1, USD: 0.0031, AED: 0.011 };
+  SYM = { LKR: 'LKR ', USD: '$', AED: 'AED ' };
+  HERO_IMGS = ['assets/hero.jpg', 'assets/peacock-plume.jpg', 'assets/sapphire-serenity.jpg', 'assets/golden-radiance.jpg'];
+
+  fmt(base) {
+    const r = this.RATES[this.state.currency];
+    return this.SYM[this.state.currency] + Math.round(base * r).toLocaleString();
+  }
+
+  componentDidMount() {
+    this._t = setInterval(() => {
+      this.setState(s => ({ hero: (s.hero + 1) % this.HERO_IMGS.length }));
+    }, 5000);
+  }
+  componentWillUnmount() { clearInterval(this._t); }
+
+  renderVals() {
+    const sw = (arr) => arr.map(c => ({ c }));
+    const mk = (list) => list.map(p => ({
+      ...p,
+      priceStr: this.fmt(p.base),
+      wasStr: p.was ? this.fmt(p.was) : null,
+    }));
+
+    const arrivals = mk([
+      { name: 'The Golden Radiance Kurta', base: 9500, img: 'assets/golden-radiance.jpg', badge: 'New', badgeBg: '#181818', sizes: ['UK 04', 'UK 06', 'UK 08', 'UK 10', '+2 more'], swatches: sw(['#a98432', '#0A0A0A', '#8B6F1E']) },
+      { name: 'Celestial Ivory Waltz', base: 7600, img: 'assets/celestial-ivory.jpg', badge: null, sizes: ['UK 06', 'UK 08', 'UK 10', 'UK 12'], swatches: sw(['#F0E9DD', '#E8D5B7', '#D4AF8C']) },
+      { name: 'The Rose Petal Dominion', base: 7200, was: 9500, img: 'assets/rose-petal.jpg', badge: 'Sale', badgeBg: '#8B2C3B', sizes: ['UK 04', 'UK 06', 'UK 08', '+1 more'], swatches: sw(['#9B5C5C', '#C68C8C']) },
+      { name: 'Emerald Elegance Set', base: 10800, img: 'assets/emerald-elegance.jpg', badge: 'New', badgeBg: '#181818', sizes: ['UK 06', 'UK 08', 'UK 10', 'UK 12', '+1 more'], swatches: sw(['#1f5a43', '#0A0A0A', '#2c7a5a']) },
+    ]);
+
+    const trending = mk([
+      { name: 'Obsidian Ember Symphony', base: 11200, img: 'assets/obsidian-ember.jpg', badge: 'Trending', badgeBg: '#181818', sizes: ['UK 04', 'UK 06', 'UK 08', 'UK 10'], swatches: sw(['#26323f', '#0A0A0A', '#7a5a3a']) },
+      { name: 'Autumn Leaf Ember', base: 8400, img: 'assets/autumn-leaf.jpg', badge: null, sizes: ['UK 06', 'UK 08', 'UK 10', 'UK 12', '+1 more'], swatches: sw(['#9c5a2c', '#c9883f']) },
+      { name: 'Sapphire Serenity', base: 9900, img: 'assets/sapphire-serenity.jpg', badge: null, sizes: ['UK 04', 'UK 06', 'UK 08', '+2 more'], swatches: sw(['#1f4a8c', '#3a6fb0']) },
+      { name: 'Azure Grace Co-ord', base: 8800, img: 'assets/azure-grace.jpg', badge: 'Trending', badgeBg: '#181818', sizes: ['UK 06', 'UK 08', 'UK 10', 'UK 12'], swatches: sw(['#5b8fc7', '#a7c4e2']) },
+    ]);
+
+    const accessories = mk([
+      { name: 'Aurum Sapphire Earrings', base: 2450, img: 'assets/aurum-sapphire.jpg' },
+      { name: 'Amethyst Veil Necklace', base: 3690, img: 'assets/amethyst-veil.jpg' },
+      { name: 'Mocha Throne Cuff', base: 4900, img: 'assets/mocha-throne.jpg' },
+      { name: 'Celeste Drop Set', base: 4500, img: 'assets/celestial-ivory.jpg' },
+    ]);
+
+    const collections = [
+      { title: 'Traditional', sub: 'Heritage silhouettes', img: 'assets/peacock-plume.jpg' },
+      { title: 'Indian', sub: 'Festive & occasion', img: 'assets/aurum-sapphire.jpg' },
+      { title: 'Modern', sub: 'Everyday elegance', img: 'assets/amethyst-veil.jpg' },
+      { title: 'Kids', sub: 'Little royals', img: 'assets/azure-grace.jpg' },
+      { title: 'Promotions', sub: 'Limited offers', img: 'assets/mocha-throne.jpg' },
+    ];
+
+    const heroSlides = this.HERO_IMGS.map((img, i) => ({
+      img,
+      opacity: i === this.state.hero ? 1 : 0,
+      scale: i === this.state.hero ? 'scale(1.0)' : 'scale(1.14)',
+    }));
+    const heroDots = this.HERO_IMGS.map((_, i) => ({
+      onClick: (e) => { e.preventDefault(); this.setState({ hero: i }); },
+      w: i === this.state.hero ? '26px' : '7px',
+      bg: i === this.state.hero ? '#fff' : 'rgba(255,255,255,.5)',
+    }));
+
+    return {
+      currency: this.state.currency,
+      setCurrency: (e) => this.setState({ currency: e.target.value }),
+      toggleMenu: (e) => { e.preventDefault(); this.setState(s => ({ menuOpen: !s.menuOpen })); },
+      closeMenu: (e) => { if (e) e.preventDefault(); this.setState({ menuOpen: false }); },
+      stop: (e) => e.stopPropagation(),
+      menuShift: this.state.menuOpen ? '0' : '-100%',
+      menuOpacity: this.state.menuOpen ? 1 : 0,
+      menuPointer: this.state.menuOpen ? 'auto' : 'none',
+      nav: ['New Arrivals', 'Collections', 'Traditional', 'Indian', 'Modern', 'Kids', 'Promotions'],
+      heroSlides, heroDots,
+      arrivals, trending, accessories, collections,
+      insta: ['assets/sapphire-serenity.jpg', 'assets/aurum-sapphire.jpg', 'assets/autumn-leaf.jpg', 'assets/azure-grace.jpg', 'assets/mocha-throne.jpg', 'assets/emerald-elegance.jpg'],
+      socials: ['f', 'in', '▶', '✦'],
+      footerCols: [
+        { title: 'Shop', links: ['New Arrivals', 'Traditional', 'Indian', 'Modern', 'Kids'] },
+        { title: 'Help', links: ['Size Guide', 'My Orders', 'Shipping Info', 'Returns Policy', 'Contact Us'] },
+        { title: 'Company', links: ['About Us', 'Sustainability', 'Journal', 'Privacy Policy', 'Terms'] },
+      ],
+      pays: ['PayHere', 'Visa', 'Mastercard', 'PayPal'],
+    };
+  }
+}
+</script>
+</body>
+</html>
